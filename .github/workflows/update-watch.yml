@@ -90,8 +90,6 @@ jobs:
       pull-requests: read
       checks: read
     uses: pgextwin/build/.github/workflows/automatic-postmerge-audit-readonly.yml@9ec4dde0b6defabc10cf3527c06cb69c13e5a7ff
-    with:
-      ci_run_id: ${{ github.event.workflow_run.id }}
 
   candidate_attested_build:
     name: Attest original candidate after verified protected main merge (NO PUBLISH)
