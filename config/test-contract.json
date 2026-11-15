@@ -1,0 +1,44 @@
+{
+  "contractVersion": 2,
+  "extension": "pg_permissions",
+  "smokeTest": {
+    "script": "windows/ci/smoke-test.ps1"
+  },
+  "runtimeRequirements": {
+    "extensionCreation": "required",
+    "preload": "none",
+    "backgroundWorker": false,
+    "clientExecutable": {
+      "required": false,
+      "packagePaths": []
+    }
+  },
+  "testSetup": {
+    "preload": "none",
+    "backgroundWorker": false,
+    "settings": []
+  },
+  "coverage": {
+    "createExtension": "covered",
+    "backgroundWorker": "not-applicable",
+    "clientExecutable": "not-applicable",
+    "serverLogAssertions": "not-applicable",
+    "upgrade": "not-covered"
+  },
+  "functionalScenarios": [
+    {
+      "id": "permission-target-and-diffs",
+      "description": "Creates pg_permissions, records desired privileges in public.permission_target, grants partial privileges, and verifies public.permission_diffs() detects both missing and extra grants.",
+      "evidence": [
+        "sql-result"
+      ]
+    },
+    {
+      "id": "permission-views-reflect-grants",
+      "description": "Verifies public.schema_permissions and public.table_permissions reflect granted and ungranted privileges accurately.",
+      "evidence": [
+        "sql-result"
+      ]
+    }
+  ]
+}
