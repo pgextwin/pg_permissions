@@ -100,7 +100,7 @@ GRANT SELECT ON TABLE pgextwin_perm_schema.t1 TO pgextwin_perm_u2;
         throw "pg_permissions functional setup failed."
     }
 
-    $totalDiffs = ((& $psql -h 127.0.0.1 -p $PgPort -U postgres -d postgres -Atqc "SELECT count(*) FROM public.permission_diffs();") | Select-Object -Last 1).Trim()
+    $totalDiffs = ((& $psql -h 127.0.0.1 -p $PgPort -U postgres -d postgres -Atqc "SELECT count(*) FROM public.permission_diffs() WHERE role_name IN ('pgextwin_perm_u1', 'pgextwin_perm_u2');") | Select-Object -Last 1).Trim()
     $missingInsert = ((& $psql -h 127.0.0.1 -p $PgPort -U postgres -d postgres -Atqc "SELECT count(*) FROM public.permission_diffs() WHERE missing = true AND role_name = 'pgextwin_perm_u1' AND object_type = 'TABLE' AND schema_name = 'pgextwin_perm_schema' AND object_name = 't1' AND permission = 'INSERT';") | Select-Object -Last 1).Trim()
     $extraSelect = ((& $psql -h 127.0.0.1 -p $PgPort -U postgres -d postgres -Atqc "SELECT count(*) FROM public.permission_diffs() WHERE missing = false AND role_name = 'pgextwin_perm_u2' AND object_type = 'TABLE' AND schema_name = 'pgextwin_perm_schema' AND object_name = 't1' AND permission = 'SELECT';") | Select-Object -Last 1).Trim()
     $schemaUsageGranted = ((& $psql -h 127.0.0.1 -p $PgPort -U postgres -d postgres -Atqc "SELECT granted FROM public.schema_permissions WHERE role_name = 'pgextwin_perm_u1' AND schema_name = 'pgextwin_perm_schema' AND permission = 'USAGE';") | Select-Object -Last 1).Trim()
@@ -108,7 +108,7 @@ GRANT SELECT ON TABLE pgextwin_perm_schema.t1 TO pgextwin_perm_u2;
     $tableInsertGranted = ((& $psql -h 127.0.0.1 -p $PgPort -U postgres -d postgres -Atqc "SELECT granted FROM public.table_permissions WHERE role_name = 'pgextwin_perm_u1' AND schema_name = 'pgextwin_perm_schema' AND object_name = 't1' AND permission = 'INSERT';") | Select-Object -Last 1).Trim()
 
     if ($totalDiffs -ne "2") {
-        throw "Expected 2 rows from public.permission_diffs(), got $totalDiffs"
+        throw "Expected 2 rows from public.permission_diffs() for smoke-test roles, got $totalDiffs"
     }
     if ($missingInsert -ne "1") {
         throw "permission_diffs() did not report missing INSERT for pgextwin_perm_u1: $missingInsert"
