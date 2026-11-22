@@ -35,13 +35,13 @@ if ($control -notmatch "(?m)^default_version\s*=\s*'([^']+)'") {
     throw "Could not determine pg_permissions default_version from pg_permissions.control."
 }
 $sqlDefaultVersion = $Matches[1]
-if ($sqlDefaultVersion -ne "1.4") {
-    throw "Expected pg_permissions.control default_version '1.4', found '$sqlDefaultVersion'."
+if ($sqlDefaultVersion -ne "1.6") {
+    throw "Expected pg_permissions.control default_version '1.6', found '$sqlDefaultVersion'."
 }
 
 $sqlFiles = @(Get-ChildItem -Path $UpstreamDir -File -Filter "pg_permissions--*.sql")
-if ($sqlFiles.Count -ne 7) {
-    throw "Expected 7 upstream pg_permissions SQL files, found $($sqlFiles.Count)."
+if ($sqlFiles.Count -ne 12) {
+    throw "Expected 12 upstream pg_permissions SQL files, found $($sqlFiles.Count)."
 }
 
 $pgConfig = Join-Path $PgRoot "bin\pg_config.exe"

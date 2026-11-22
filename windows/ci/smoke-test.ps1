@@ -87,9 +87,11 @@ INSERT INTO public.permission_target
     (role_name, permissions, object_type, schema_name, object_name, column_name)
 VALUES
     ('pgextwin_perm_u1', ARRAY['USAGE']::public.perm_type[], 'SCHEMA', 'pgextwin_perm_schema', NULL, NULL),
-    ('pgextwin_perm_u1', ARRAY['SELECT','INSERT']::public.perm_type[], 'TABLE', 'pgextwin_perm_schema', 't1', NULL);
+    ('pgextwin_perm_u1', ARRAY['SELECT','INSERT']::public.perm_type[], 'TABLE', 'pgextwin_perm_schema', 't1', NULL),
+    ('pgextwin_perm_u2', ARRAY['USAGE']::public.perm_type[], 'SCHEMA', 'pgextwin_perm_schema', NULL, NULL);
 
 GRANT USAGE ON SCHEMA pgextwin_perm_schema TO pgextwin_perm_u1;
+GRANT USAGE ON SCHEMA pgextwin_perm_schema TO pgextwin_perm_u2;
 GRANT SELECT ON TABLE pgextwin_perm_schema.t1 TO pgextwin_perm_u1;
 GRANT SELECT ON TABLE pgextwin_perm_schema.t1 TO pgextwin_perm_u2;
 '@ | Set-Content -Path $setupSql -Encoding utf8
