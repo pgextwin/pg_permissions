@@ -21,8 +21,8 @@ if (-not (Test-Path $extensionDir -PathType Container)) {
 }
 
 $sqlFiles = @(Get-ChildItem -Path $UpstreamDir -File -Filter "pg_permissions--*.sql")
-if ($sqlFiles.Count -ne 7) {
-    throw "Expected 7 pg_permissions SQL files, found $($sqlFiles.Count)."
+if ($sqlFiles.Count -ne 12) {
+    throw "Expected 12 pg_permissions SQL files, found $($sqlFiles.Count)."
 }
 
 Copy-Item $control (Join-Path $extensionDir "pg_permissions.control") -Force
